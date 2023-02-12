@@ -128,3 +128,4 @@ model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accur
 # new
 # Train the model
 history = model.fit(train_images, train_labels, epochs=10, batch_size=32, validation_data=(test_images, test_labels))
+
