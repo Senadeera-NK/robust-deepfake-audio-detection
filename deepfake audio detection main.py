@@ -119,6 +119,8 @@ for file in fake_preprocessed_files:
 
 all_audio_data = real_preprocessed_audios_data + fake_preprocessed_audios_data
 
+# ----------- specific changes for the model starts --------------#
+
 # Convert the list of audio data into a numpy array
 all_audio_data = np.array(all_audio_data)
 
