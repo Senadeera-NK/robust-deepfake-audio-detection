@@ -5,15 +5,27 @@
 
 # user should be able to download deepfake audios and real audios seperately
 
-from flask import Flask
+from flask import Flask, render_template, request
+from werkzeug import secure_filename
 app = Flask(__name__)
 
-@app.route('/')
-def upload_audios():
-  'upload audio files'
+@app.route('/upload')
+def upload_file():
+   return render_template('upload.html')
 
+@app.route('/audios-uploader', methods = ['GET', 'POST'])
+def upload_audios():
+   if request.method == 'POST':
+      f = request.files['file']
+      f.save(secure_filename(f.filename))
+      return 'audio files uploaded successfully'
+
+@app.route('/background-noises-uploader', methods = ['GET', 'POST'])
 def upload_background_noises():
-  'upload background noises'
+   if request.method == 'POST':
+      f = request.files['file']
+      f.save(secure_filename(f.filename))
+      return 'background noises files uploaded successfully'
 
 if __name__ == '__main__':
-   app.run()
+   app.run(debug = True)
