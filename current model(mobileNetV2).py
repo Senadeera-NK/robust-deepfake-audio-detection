@@ -101,15 +101,15 @@ for spectrogram_image in spectrogram_images:
     spectrogram_images_resized.append(spectrogram_image_resized)
 spectrogram_images = np.array(spectrogram_images_resized)
 
-print(np.shape(labels))
-print(np.shape(spectrogram_images_resized))
+#print(np.shape(labels))
+#print(np.shape(spectrogram_images_resized))
 
 le = LabelEncoder()
 labels_integer = le.fit_transform(labels)
 labels_one_hot = to_categorical(labels_integer, num_classes=2)
 
-print(np.shape(labels_one_hot))
-print(np.shape(spectrogram_images_resized))
+#print(np.shape(labels_one_hot))
+#print(np.shape(spectrogram_images_resized))
 
 train_images, test_images, train_labels, test_labels = train_test_split(spectrogram_images_resized, labels_one_hot, test_size=0.2, random_state=42)
 
@@ -118,13 +118,13 @@ train_labels = np.array(train_labels)
 test_images = np.array(test_images)
 test_labels = np.array(test_labels)
 
-print(train_images.shape)
-print(train_labels.shape)
-print(test_images.shape)
-print(test_labels.shape)
+#print(train_images.shape)
+#print(train_labels.shape)
+#print(test_images.shape)
+#print(test_labels.shape)
 
-print(train_labels.shape)
-print(test_labels.shape)
+#print(train_labels.shape)
+#print(test_labels.shape)
 
 # new
 train_images = np.expand_dims(train_images, axis=-1)
@@ -134,10 +134,10 @@ test_images = np.expand_dims(test_images, axis=-1)
 train_images = np.repeat(train_images, 3, axis=-1)
 test_images = np.repeat(test_images, 3, axis=-1)
 
-print(train_images.shape)
-print(train_labels.shape)
-print(test_images.shape)
-print(test_labels.shape)
+#print(train_images.shape)
+#print(train_labels.shape)
+#print(test_images.shape)
+#print(test_labels.shape)
 
 # new
 # define data augmentation generator
