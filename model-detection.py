@@ -20,19 +20,16 @@ def home():
 current_dir = os.getcwd()
 
 
-@app.route('/audios-uploader', methods = ['POST'])
-def upload_audios():
-    audio_file = request.files['file']
-    # Save the audio file to a folder
-    audio_file.save('<path_to_folder>/audio_file.wav')
-    return 'Audio file uploaded successfully'
-
-@app.route('/background-noises-uploader', methods = ['POST'])
-def upload_background_noises():
-    bg_noise_file = request.files['file']
-    # Save the background noise file to a folder
-    bg_noise_file.save('<path_to_folder>/bg_noise_file.wav')
-    return 'Background noise file uploaded successfully'
+@app.route('/upload-audio', methods = ['POST'])
+def upload_audio():
+   audio_file = request.files['audio-file']
+   filename = secure_filename(audio_file.filename)
+   if audio_file.filename == '':
+      return 'No selected file'
+   if audio_file:
+      #save the audio and background noise files to the current directory
+      audio_file.save(current_dir+'/audios/'+filename)
+      return 'files uploaded successfully'
 
 #running the app
 if __name__ == '__main__':

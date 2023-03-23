@@ -7,13 +7,8 @@
   <title>upload</title>
 </head>
 <body>
-  <form action="http://127.0.0.1:5000/audios-uplaoder" method="POST">
-    <label for="audio file">audio file :</label><input type="file" name="file" id="audios" accept="audio/*">
-    <input type="submit" value="submit">
-  </form>
-  <br>
-  <form action="http://127.0.0.1:5000/background-noises-uplaoder" method="POST">
-    <label for="background audio file">background audio file: </label><input type="file" name="file" id="background-noises" accept="audio/*">
+  <form action="http://127.0.0.1:5000/upload-audio" method="POST" enctype="multipart/form-data">
+    <label for="audio file">Select an audio file to upload :</label><input type="file" name="audio-file" id="audio-file" accept="audio/*">
     <input type="submit" value="submit">
   </form>
 </body>
