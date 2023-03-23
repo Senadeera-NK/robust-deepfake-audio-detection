@@ -6,26 +6,34 @@
 # user should be able to download deepfake audios and real audios seperately
 
 from flask import Flask, render_template, request
-from werkzeug import secure_filename
+from werkzeug.utils import secure_filename
+import os
+
 app = Flask(__name__)
 
-@app.route('/upload')
-def upload_file():
+# function to upload the audio file/files
+@app.route('/')
+def home():
    return render_template('upload.html')
 
-@app.route('/audios-uploader', methods = ['GET', 'POST'])
+# to get the current directory
+current_dir = os.getcwd()
+
+
+@app.route('/audios-uploader', methods = ['POST'])
 def upload_audios():
-   if request.method == 'POST':
-      f = request.files['file']
-      f.save(secure_filename(f.filename))
-      return 'audio files uploaded successfully'
+    audio_file = request.files['file']
+    # Save the audio file to a folder
+    audio_file.save('<path_to_folder>/audio_file.wav')
+    return 'Audio file uploaded successfully'
 
-@app.route('/background-noises-uploader', methods = ['GET', 'POST'])
+@app.route('/background-noises-uploader', methods = ['POST'])
 def upload_background_noises():
-   if request.method == 'POST':
-      f = request.files['file']
-      f.save(secure_filename(f.filename))
-      return 'background noises files uploaded successfully'
+    bg_noise_file = request.files['file']
+    # Save the background noise file to a folder
+    bg_noise_file.save('<path_to_folder>/bg_noise_file.wav')
+    return 'Background noise file uploaded successfully'
 
+#running the app
 if __name__ == '__main__':
    app.run(debug = True)

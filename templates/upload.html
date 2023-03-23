@@ -8,11 +8,12 @@
 </head>
 <body>
   <form action="http://127.0.0.1:5000/audios-uplaoder" method="POST">
-    <input type="file" name="file" id="audios">
+    <label for="audio file">audio file :</label><input type="file" name="file" id="audios" accept="audio/*">
     <input type="submit" value="submit">
   </form>
+  <br>
   <form action="http://127.0.0.1:5000/background-noises-uplaoder" method="POST">
-    <input type="file" name="file" id="background-noises">
+    <label for="background audio file">background audio file: </label><input type="file" name="file" id="background-noises" accept="audio/*">
     <input type="submit" value="submit">
   </form>
 </body>
