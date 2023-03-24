@@ -5,7 +5,7 @@
 
 # user should be able to download deepfake audios and real audios seperately
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request,redirect, url_for
 from werkzeug.utils import secure_filename
 
 import librosa
@@ -13,6 +13,7 @@ import numpy as np
 import tensorflow as tf
 import os
 import sys
+
 
 sys.path.append(r"c:\\users\\asus\\appdata\\roaming\\python\\python39\\site-packages")
 
@@ -77,6 +78,15 @@ def upload_audio():
          else:
             result = 'deepfake audio'
          results.append(result)
+   return redirect(url_for('show_results', results=results))
+
+@app.route('/loading')
+def show_loading():
+   return render_template('loading.html')
+
+@app.route('/results')
+def show_results():
+   results = request.arg.getlist('results')
    return render_template('result.html', results=results)
 
 #running the app

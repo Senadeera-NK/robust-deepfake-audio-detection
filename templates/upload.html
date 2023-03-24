@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -12,5 +12,48 @@
     <label for="audio file">Select one or more audio files to upload :</label><input type="file" name="audio-file" id="audio-file" accept="audio/*" multiple>
     <input type="submit" value="submit">
   </form>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>upload</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+</head>
+<body>
+  <form id="audio-upload-form" method="POST" enctype="multipart/form-data">
+    <label for="audio-file">Select one or more audio files to upload :</label>
+    <input type="file" name="audio-file" id="audio-file" accept="audio/*" multiple>
+    <input type="button" value="Submit" onclick="uploadAudio()">
+  </form>
+  <script>
+    function uploadAudio() {
+      var form = document.getElementById("audio-upload-form");
+      var xhr = new XMLHttpRequest();
+      xhr.open(form.method, form.action, true);
+      xhr.upload.onprogress = function(event) {
+        if (event.lengthComputable) {
+          var percentComplete = (event.loaded / event.total) * 100;
+          console.log(percentComplete + '% uploaded');
+          // show loading page
+          window.location.href = "/loading";
+        }
+      };
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          console.log('Upload finished successfully!');
+          // redirect to results page
+          window.location.href = "/results";
+        } else {
+          console.error('Error during upload');
+        }
+      };
+      xhr.send(new FormData(form));
+    }
+  </script>
 </body>
 </html>
