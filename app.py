@@ -37,6 +37,7 @@ def preprocess_audio(audio_path):
    # add an additional dimension to the spectogram for the model input
    return normalized_spectogram.reshape(1,128,173,1)
 
+
 # FLASK APPLICATION BEGINS HERE
 app = Flask(__name__)
 
