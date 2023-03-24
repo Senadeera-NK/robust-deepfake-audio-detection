@@ -8,7 +8,7 @@
 </head>
 <body>
   <form action="http://127.0.0.1:5000/upload-audio" method="POST" enctype="multipart/form-data">
-    <label for="audio file">Select an audio file to upload :</label><input type="file" name="audio-file" id="audio-file" accept="audio/*">
+    <label for="audio file">Select one or more audio files to upload :</label><input type="file" name="audio-file" id="audio-file" accept="audio/*" multiple>
     <input type="submit" value="submit">
   </form>
 </body>

@@ -44,33 +44,35 @@ def home():
 
 @app.route('/upload-audio', methods = ['POST'])
 def upload_audio():
-   audio_file = request.files['audio-file']
-   filename = secure_filename(audio_file.filename)
+   audio_files = request.files.getlist('audio_file')
+   results = []
 
    # to get the current directory
    current_dir = os.getcwd()
 
-   if audio_file.filename == '':
-      return 'No selected file'
-   if audio_file:
-      #save the audio and background noise files to the current directory
-      file_path = current_dir+'/audios/'+filename
-      audio_file.save(file_path)
+   for audio_file in audio_files:
+      filename = secure_filename(audio_file.filename)
+      if audio_file.filename == '':
+         return 'No selected file'
+      if audio_file:
+         # save the audio file
+         filepath = current_dir + '/audios/' + filename
+         audio_file.save(filepath)
 
-      # preprocess the audio file
-      preprocessed_audio = preprocess_audio(file_path)
+         # preprocess the audio file
+         preprocess_audio = preprocess_audio(filepath)
 
-      # Run the model to detect if the audio is a deepfake or not
-      prediction = model.predict(preprocessed_audio)
+         # run the model to detect if the audio is a deepfake or not
+         prediction = model.predict(preprocess_audio)
 
-      # If the model predicts a label of 0, the audio is a real audio
-      # If the model predicts a label of 1, the audio is a deepfake
-      if prediction[0][0] < 0.5:
-        result = 'Real audio'
-      else:
-        result = 'Deepfake audio'
-
-   return result
+         # if the model predicts a label of 0, the audio is a deepfake
+         # if the model predicts a label of a 1, the audio is a real
+         if prediction[0][0] < 0.5:
+            result = 'real audio'
+         else:
+            result = 'deepfake audio'
+         results.append(result)
+   return render_template('result.html', results=results)
 
 #running the app
 if __name__ == '__main__':
