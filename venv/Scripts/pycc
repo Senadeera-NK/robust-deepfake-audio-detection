@@ -1,0 +1,3 @@
+#!D:\CS FINAL YEAR\Final Project\my project\robust-deepfake-audio-detection\venv\Scripts\python.exe
+from numba.pycc import main
+main()

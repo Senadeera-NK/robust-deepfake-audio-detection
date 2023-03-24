@@ -7,10 +7,14 @@
 
 from flask import Flask, render_template, request
 from werkzeug.utils import secure_filename
+
 import librosa
 import numpy as np
 import tensorflow as tf
 import os
+import sys
+
+sys.path.append(r"c:\\users\\asus\\appdata\\roaming\\python\\python39\\site-packages")
 
 # load the saved model
 model = tf.keras.models.load_model('model.h5')
