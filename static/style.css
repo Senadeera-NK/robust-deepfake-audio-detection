@@ -45,3 +45,29 @@ h1{
   font-weight: bold;
   color: #3498db;
 }
+
+/* styles for the upload button */
+.upload-btn {
+  display: inline-block;
+  padding: 8px 12px;
+  background-color: #3498db;
+  color: #fff;
+  border-radius: 4px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.upload-btn span{
+  display: block;
+}
+
+#audio-file{
+  display: none;
+}
+
+input[type="file"]{
+  opacity: 0; /* make transparent */
+  z-index: -1; /* move under anything else */
+  position: absolute; /* don't let it take up space */
+}
