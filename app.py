@@ -45,7 +45,7 @@ app = Flask(__name__)
 # function to upload the audio file/files
 @app.route('/')
 def home():
-   return render_template('loading.html')
+   return render_template('upload.html')
 
 
 # @app.route('/upload-audio', methods = ['POST'])
