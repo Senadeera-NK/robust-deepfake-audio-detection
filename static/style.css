@@ -12,6 +12,10 @@ body {
 }
 
 .loader {
+  position: absolute;
+  top: 30%;
+  left: 45%;
+  transform: translate(-50%, -50%);
   border: 16px solid #f3f3f3;
   border-top: 16px solid #3498db;
   border-radius: 50%;
@@ -23,6 +27,16 @@ body {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+h1{
+    position:absolute;
+    top: 55%;
+    left: 35%;
+    font-size: 24px;
+    font-weight: bold;
+    color: black;
+    margin-top: 0; /* remove the default margin to align the h1 tag with the loader */
 }
 
 .message {
