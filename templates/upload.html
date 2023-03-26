@@ -27,10 +27,23 @@
 <body>
   <form id="audio-upload-form" method="POST" enctype="multipart/form-data">
     <label for="audio-file" class="upload-btn"><span>Upload audio files</span></label>
-    <input type="file" name="audio-file" id="audio-file" accept="audio/*" multiple>
-    <input type="button" value="Submit" onclick="uploadAudio()">
+    <input type="file" name="audio-file" id="audio-file" accept="audio/*" multiple onchange="updateFileName()"/>
+    <input type="button" value="Submit" class="submit-btn" onclick="uploadAudio()"/>
+    <div id="file-name-list"></div>
   </form>
   <script>
+    function updateFileName() {
+      var input = document.getElementById("audio-file");
+      var output = document.getElementById("file-name-list");
+      var files = input.files;
+      output.innerHTML = "";
+      for (var i = 0; i < files.length; i++) {
+        var fileName = files[i].name;
+        var li = document.createElement("li");
+        li.innerHTML = fileName;
+        output.appendChild(li);
+      }
+    }
     function uploadAudio() {
       var form = document.getElementById("audio-upload-form");
       var xhr = new XMLHttpRequest();

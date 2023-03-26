@@ -48,41 +48,41 @@ def home():
    return render_template('upload.html')
 
 
-# @app.route('/upload-audio', methods = ['POST'])
-# def upload_audio():
-#    audio_files = request.files.getlist('audio_file')
-#    results = []
+@app.route('/upload-audio', methods = ['POST'])
+def upload_audio():
+   audio_files = request.files.getlist('audio_file')
+   results = []
 
-#    # to get the current directory
-#    current_dir = os.getcwd()
+   # to get the current directory
+   current_dir = os.getcwd()
 
-#    for audio_file in audio_files:
-#       filename = secure_filename(audio_file.filename)
-#       if audio_file.filename == '':
-#          return 'No selected file'
-#       if audio_file:
-#          # save the audio file
-#          filepath = current_dir + '/audios/' + filename
-#          audio_file.save(filepath)
+   for audio_file in audio_files:
+      filename = secure_filename(audio_file.filename)
+      if audio_file.filename == '':
+         return 'No selected file'
+      if audio_file:
+         # save the audio file
+         filepath = current_dir + '/audios/' + filename
+         audio_file.save(filepath)
 
-#          # preprocess the audio file
-#          preprocess_audio = preprocess_audio(filepath)
+         # # preprocess the audio file
+         # preprocess_audio = preprocess_audio(filepath)
 
-#          # run the model to detect if the audio is a deepfake or not
-#          prediction = model.predict(preprocess_audio)
+         # # run the model to detect if the audio is a deepfake or not
+         # prediction = model.predict(preprocess_audio)
 
-#          # if the model predicts a label of 0, the audio is a deepfake
-#          # if the model predicts a label of a 1, the audio is a real
-#          if prediction[0][0] < 0.5:
-#             result = 'real audio'
-#          else:
-#             result = 'deepfake audio'
-#          results.append(result)
-#    return redirect(url_for('show_results', results=results))
+         # # if the model predicts a label of 0, the audio is a deepfake
+         # # if the model predicts a label of a 1, the audio is a real
+         # if prediction[0][0] < 0.5:
+         #    result = 'real audio'
+         # else:
+         #    result = 'deepfake audio'
+         # results.append(result)
+   return redirect('file saved successfully')
 
-# @app.route('/loading')
-# def show_loading():
-#    return render_template('loading.html')
+@app.route('/loading')
+def show_loading():
+   return render_template('loading.html')
 
 # @app.route('/results')
 # def show_results():

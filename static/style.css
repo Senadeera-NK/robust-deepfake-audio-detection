@@ -48,6 +48,9 @@ h1{
 
 /* styles for the upload button */
 .upload-btn {
+  position:absolute;
+  top: 10%;
+  left: 40%;
   display: inline-block;
   padding: 8px 12px;
   background-color: #3498db;
@@ -56,18 +59,41 @@ h1{
   font-size: 18px;
   font-weight: bold;
   cursor: pointer;
+  margin: 0;
 }
 
 .upload-btn span{
   display: block;
 }
 
-#audio-file{
-  display: none;
-}
-
 input[type="file"]{
   opacity: 0; /* make transparent */
   z-index: -1; /* move under anything else */
   position: absolute; /* don't let it take up space */
+}
+
+.submit-btn {
+  position:absolute;
+  bottom: 10%;
+  left: 43%;
+  display: inline-block;
+  padding: 8px 12px;
+  background-color: #aab9c3;
+  color: black;
+  border-radius: 4px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 0;
+}
+
+#file-name-list {
+  margin-top: 20px;
+  list-style: none;
+  padding: 0;
+  font-size: 16px;
+}
+
+#file-name-list li {
+  margin-top: 10px;
 }
