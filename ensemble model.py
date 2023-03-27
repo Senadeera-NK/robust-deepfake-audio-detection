@@ -75,41 +75,7 @@ test_labels = np.array(test_labels)
 # model.py functions
 # define the model architecture
 def create_model(input_shape, num_classes):
-    model = Sequential([
-        Conv2D(32, (3,3), activation='relu', padding='same', input_shape=input_shape),
-        BatchNormalization(),
-        Conv2D(32, (3,3), activation='relu', padding='same'),
-        BatchNormalization(),
-        MaxPooling2D(pool_size=(2,2)),
-        Dropout(0.25),
-
-        Conv2D(64, (3,3), activation='relu', padding='same'),
-        BatchNormalization(),
-        Conv2D(64, (3,3), activation='relu', padding='same'),
-        BatchNormalization(),
-        MaxPooling2D(pool_size=(2,2)),
-        Dropout(0.25),
-
-        Conv2D(128, (3,3), activation='relu', padding='same'),
-        BatchNormalization(),
-        Conv2D(128, (3,3), activation='relu', padding='same'),
-        BatchNormalization(),
-        MaxPooling2D(pool_size=(2,2)),
-        Dropout(0.25),
-
-        Conv2D(256, (3,3), activation='relu', padding='same'),
-        BatchNormalization(),
-        Conv2D(256, (3,3), activation='relu', padding='same'),
-        BatchNormalization(),
-        MaxPooling2D(pool_size=(2,2)),
-        Dropout(0.25),
-
-        GlobalAveragePooling2D(),
-        Dense(256, activation='relu'),
-        BatchNormalization(),
-        Dropout(0.5),
-        Dense(num_classes, activation='softmax')
-    ])
+   
 
     return model
 
