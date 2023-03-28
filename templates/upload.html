@@ -25,7 +25,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
 </head>
 <body>
-  <form id="audio-upload-form" method="POST" enctype="multipart/form-data">
+  <form id="audio-upload-form" method="POST" enctype="multipart/form-data" action="{{ url_for('upload_audio') }}">
     <label for="audio-file" class="upload-btn"><span>Upload audio files</span></label>
     <input type="file" name="audio-file" id="audio-file" accept="audio/*" multiple onchange="updateFileName()"/>
     <input type="button" value="Submit" class="submit-btn" onclick="submitForm()"/>
@@ -46,10 +46,15 @@
     }
     function submitForm() {
       var form = document.getElementById("audio-upload-form");
-      form.action = "{{ url_for('upload_audio') }}";
-      form.submit();
+      var formData = new FormData(form);
+
       // show the loading page
       document.location.href = "{{ url_for('show_loading') }}";
+
+      // submit the form data asynchronously using AJAX
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "{{ url_for('upload_audio') }}");
+      xhr.send(formData);
     }
   </script>
 </body>

@@ -5,7 +5,7 @@
 
 # user should be able to download deepfake audios and real audios seperately
 
-from flask import Flask, render_template, request,redirect, url_for
+from flask import Flask, render_template, request,redirect, url_for, jsonify
 from werkzeug.utils import secure_filename
 
 # to load the model
@@ -77,8 +77,8 @@ def home():
 
 @app.route('/upload-audio', methods = ['POST'])
 def upload_audio():
-   audio_files = request.files.getlist('audio_file')
-   results = []
+   audio_files = request.files.getlist('audio-file')
+   filepaths = []
 
    for audio_file in audio_files:
       filename = secure_filename(audio_file.filename)
@@ -88,21 +88,32 @@ def upload_audio():
          # save the audio file
          filepath = current_dir + '/audios/' + filename
          audio_file.save(filepath)
+         filepaths.append(filepath)
+   #redirect to classification route
+   print('hi clsasify')
+   return redirect(url_for('classify_audio', filepaths=filepaths))
 
-         # preprocess the audio file
-         preprocessed_audio = preprocess_audio(filepath)
+@app.route('/classify-audio', methods = ['GET'])
+def classify_audio():
+    filepaths = request.args.getlist('filepaths')
+    results = []
+    for filepath in filepaths:
+        # preprocess the audio file
+        preprocessed_audio = preprocess_audio(filepath)
 
-         # run the model to detect if the audio is a deepfake or not
-         prediction = model.predict(preprocessed_audio)
+        # run the model to detect if the audio is a deepfake or not
+        prediction = model.predict(preprocessed_audio)
 
-         # if the model predicts a label of 0, the audio is a deepfake
-         # if the model predicts a label of a 1, the audio is a real
-         if prediction[0][0] < 0.5:
+        # if the model predicts a label of 0, the audio is a deepfake
+        # if the model predicts a label of a 1, the audio is a real
+        if prediction[0][0] < 0.5:
             result = 'real audio'
-         else:
+        else:
             result = 'deepfake audio'
-         results.append(result)
-   return redirect(url_for('show_results', results=results))
+        results.append(result)
+    print('hi')
+    print(results)
+    return jsonify(results)
 
 @app.route('/loading')
 def show_loading():
