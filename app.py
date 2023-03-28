@@ -11,11 +11,15 @@ from werkzeug.utils import secure_filename
 # to load the model
 from tensorflow.keras.models import load_model
 
-import librosa
 import numpy as np
 import tensorflow as tf
 import os
 import sys
+
+# for preprocessing the audio file
+from skimage.transform import resize
+import cv2
+import librosa
 
 
 sys.path.append(r"c:\\users\\asus\\appdata\\roaming\\python\\python39\\site-packages")
@@ -31,22 +35,33 @@ model = load_model(model_path)
 
 #define a function to preprocess the audio file before feeding it to the model
 def preprocess_audio(audio_path):
-   # load the audio file
-   signal, sr = librosa.load(audio_path, sr=16000)
+   # # load the audio file
+   # signal, sr = librosa.load(audio_path, sr=16000)
 
-   #trim the silence from the start and end of the audio
-   signal,_ = librosa.effects.trim(signal)
+   # #trim the silence from the start and end of the audio
+   # signal,_ = librosa.effects.trim(signal)
 
-   # extract features using mel spectogram
-   spectogram = librosa.feature.melspectrogram(signal,sr=8000,n_mels=128)
-   log_mel_spectrogram = librosa.amplitude_to_db(spectogram, ref=np.max)
+   # # extract features using mel spectogram
+   # spectogram = librosa.feature.melspectrogram(signal,sr=8000,n_mels=128)
+   # log_mel_spectrogram = librosa.amplitude_to_db(spectogram, ref=np.max)
 
-   # normalize the spectogram
-   normalized_spectogram = (log_mel_spectrogram+80) / 8.0
+   # # normalize the spectogram
+   # normalized_spectogram = (log_mel_spectrogram+80) / 8.0
 
    # add an additional dimension to the spectogram for the model input
-   return normalized_spectogram.reshape(1,128,173,1)
+   #return normalized_spectogram.reshape(1,128,173,1)
 
+
+   #audio_file = [os.path.join(audio_path, f) for f in os.listdir(audio_path) if f.endswith('.wav')]
+   audio,sr = librosa.load(audio_path, sr=None)
+   spectrogram = librosa.feature.melspectrogram(y=audio, sr=sr)
+   spectrogram = librosa.power_to_db(spectrogram)
+   spectrogram = np.array(spectrogram, dtype=np.float32)
+   spectrogram_resized = resize(spectrogram, (128,128))
+   spectrogram_resized = cv2.GaussianBlur(spectrogram_resized, (5,5), 0)
+   spectrogram_resized = np.repeat(spectrogram_resized[:,:,np.newaxis], 3, axis=-1)
+   spectrogram_resized = spectrogram_resized / 255.0
+   return spectrogram_resized
 
 # FLASK APPLICATION BEGINS HERE
 app = Flask(__name__)
