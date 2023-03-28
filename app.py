@@ -90,17 +90,18 @@ def upload_audio():
          audio_file.save(filepath)
          filepaths.append(filepath)
    #redirect to classification route
-   print('hi clsasify')
+   print('next to clsasify')
    return redirect(url_for('classify_audio', filepaths=filepaths))
 
 @app.route('/classify-audio', methods = ['GET'])
 def classify_audio():
+    print('this is classify')
     filepaths = request.args.getlist('filepaths')
     results = []
     for filepath in filepaths:
         # preprocess the audio file
         preprocessed_audio = preprocess_audio(filepath)
-
+        print(preprocess_audio.shape)
         # run the model to detect if the audio is a deepfake or not
         prediction = model.predict(preprocessed_audio)
 
