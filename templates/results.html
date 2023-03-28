@@ -10,15 +10,13 @@
 <body>
   <h1>Results</h1>
   <div class="results-container">
-    <div class="result">
-      <h2>Audio 1</h2>
-      <p>Prediction: {{ predictions[0] }}</p>
-    </div>
-    <div class="result">
-      <h2>Audio 2</h2>
-      <p>Prediction: {{ predictions[1] }}</p>
-    </div>
-    <!-- add more divs for each audio file -->
+      <h1>Results:</h1>
+      <ul>
+         {% for result in results %}
+            <li>{{ result }}</li>
+         {% endfor %}
+      </ul>
+      <a href="{{ url_for('home') }}">Upload another file</a>
   </div>
 </body>
 </html>

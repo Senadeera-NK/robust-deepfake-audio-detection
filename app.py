@@ -18,15 +18,18 @@ import sys
 
 # for preprocessing the audio file
 from skimage.transform import resize
-import cv2
+#import cv2
+# instead of cv2, using guassian_filter here
+from scipy.ndimage.filters import gaussian_filter
+
 import librosa
 
 
-sys.path.append(r"c:\\users\\asus\\appdata\\roaming\\python\\python39\\site-packages")
+#sys.path.append('D:\\CS FINAL YEAR\\Final Project\\my project\\robust-deepfake-audio-detection\\venv\\Lib\\site-packages')
 
 # to get the current directory
 current_dir = os.getcwd()
-model_file = 'best_mode_1.h5'
+model_file = 'best_model_3.h5'
 
 model_path = os.path.join(current_dir, model_file)
 
@@ -53,12 +56,12 @@ def preprocess_audio(audio_path):
 
 
    #audio_file = [os.path.join(audio_path, f) for f in os.listdir(audio_path) if f.endswith('.wav')]
-   audio,sr = librosa.load(audio_path, sr=None)
-   spectrogram = librosa.feature.melspectrogram(y=audio, sr=sr)
+   audio, sr = librosa.load(audio_path, sr=None)
+   spectrogram = librosa.feature.melspectrogram(y=audio,sr=sr)
    spectrogram = librosa.power_to_db(spectrogram)
    spectrogram = np.array(spectrogram, dtype=np.float32)
    spectrogram_resized = resize(spectrogram, (128,128))
-   spectrogram_resized = cv2.GaussianBlur(spectrogram_resized, (5,5), 0)
+   spectrogram_resized = gaussian_filter(spectrogram_resized,sigma=(5,5), mode='constant')
    spectrogram_resized = np.repeat(spectrogram_resized[:,:,np.newaxis], 3, axis=-1)
    spectrogram_resized = spectrogram_resized / 255.0
    return spectrogram_resized
@@ -87,10 +90,10 @@ def upload_audio():
          audio_file.save(filepath)
 
          # preprocess the audio file
-         preprocess_audio = preprocess_audio(filepath)
+         preprocessed_audio = preprocess_audio(filepath)
 
          # run the model to detect if the audio is a deepfake or not
-         prediction = model.predict(preprocess_audio)
+         prediction = model.predict(preprocessed_audio)
 
          # if the model predicts a label of 0, the audio is a deepfake
          # if the model predicts a label of a 1, the audio is a real
@@ -99,7 +102,7 @@ def upload_audio():
          else:
             result = 'deepfake audio'
          results.append(result)
-   return redirect('file saved successfully')
+   return redirect(url_for('show_results', results=results))
 
 @app.route('/loading')
 def show_loading():
@@ -107,7 +110,9 @@ def show_loading():
 
 @app.route('/results')
 def show_results():
-   results = request.arg.getlist('results')
+   results = request.args.getlist('results')
+   if not results:
+      return redirect(url_for('home'))
    return render_template('result.html', results=results)
 
 #running the app

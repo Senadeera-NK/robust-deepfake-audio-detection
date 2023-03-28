@@ -28,7 +28,7 @@
   <form id="audio-upload-form" method="POST" enctype="multipart/form-data">
     <label for="audio-file" class="upload-btn"><span>Upload audio files</span></label>
     <input type="file" name="audio-file" id="audio-file" accept="audio/*" multiple onchange="updateFileName()"/>
-    <input type="button" value="Submit" class="submit-btn" onclick="uploadAudio()"/>
+    <input type="button" value="Submit" class="submit-btn" onclick="submitForm()"/>
     <div id="file-name-list"></div>
   </form>
   <script>
@@ -44,28 +44,12 @@
         output.appendChild(li);
       }
     }
-    function uploadAudio() {
+    function submitForm() {
       var form = document.getElementById("audio-upload-form");
-      var xhr = new XMLHttpRequest();
-      xhr.open(form.method, form.action, true);
-      xhr.upload.onprogress = function(event) {
-        if (event.lengthComputable) {
-          var percentComplete = (event.loaded / event.total) * 100;
-          console.log(percentComplete + '% uploaded');
-          // show loading page
-          window.location.href = "/loading";
-        }
-      };
-      xhr.onload = function() {
-        if (xhr.status === 200) {
-          console.log('Upload finished successfully!');
-          // redirect to results page
-          window.location.href = "/results";
-        } else {
-          console.error('Error during upload');
-        }
-      };
-      xhr.send(new FormData(form));
+      form.action = "{{ url_for('upload_audio') }}";
+      form.submit();
+      // show the loading page
+      document.location.href = "{{ url_for('show_loading') }}";
     }
   </script>
 </body>
