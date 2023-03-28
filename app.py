@@ -8,6 +8,9 @@
 from flask import Flask, render_template, request,redirect, url_for
 from werkzeug.utils import secure_filename
 
+# to load the model
+from tensorflow.keras.models import load_model
+
 import librosa
 import numpy as np
 import tensorflow as tf
@@ -17,26 +20,32 @@ import sys
 
 sys.path.append(r"c:\\users\\asus\\appdata\\roaming\\python\\python39\\site-packages")
 
+# to get the current directory
+current_dir = os.getcwd()
+model_file = 'best_mode_1.h5'
+
+model_path = os.path.join(current_dir, model_file)
+
 # load the saved model
-model = tf.keras.models.load_model('model.h5')
+model = load_model(model_path)
 
-# define a function to preprocess the audio file before feeding it to the model
-# def preprocess_audio(audio_path):
-#    # load the audio file
-#    signal, sr = librosa.load(audio_path, sr=16000)
+#define a function to preprocess the audio file before feeding it to the model
+def preprocess_audio(audio_path):
+   # load the audio file
+   signal, sr = librosa.load(audio_path, sr=16000)
 
-#    #trim the silence from the start and end of the audio
-#    signal,_ = librosa.effects.trim(signal)
+   #trim the silence from the start and end of the audio
+   signal,_ = librosa.effects.trim(signal)
 
-#    # extract features using mel spectogram
-#    spectogram = librosa.feature.melspectrogram(signal,sr=8000,n_mels=128)
-#    log_mel_spectrogram = librosa.amplitude_to_db(spectogram, ref=np.max)
+   # extract features using mel spectogram
+   spectogram = librosa.feature.melspectrogram(signal,sr=8000,n_mels=128)
+   log_mel_spectrogram = librosa.amplitude_to_db(spectogram, ref=np.max)
 
-#    # normalize the spectogram
-#    normalized_spectogram = (log_mel_spectrogram+80) / 8.0
+   # normalize the spectogram
+   normalized_spectogram = (log_mel_spectrogram+80) / 8.0
 
-#    # add an additional dimension to the spectogram for the model input
-#    return normalized_spectogram.reshape(1,128,173,1)
+   # add an additional dimension to the spectogram for the model input
+   return normalized_spectogram.reshape(1,128,173,1)
 
 
 # FLASK APPLICATION BEGINS HERE
@@ -52,9 +61,6 @@ def home():
 def upload_audio():
    audio_files = request.files.getlist('audio_file')
    results = []
-
-   # to get the current directory
-   current_dir = os.getcwd()
 
    for audio_file in audio_files:
       filename = secure_filename(audio_file.filename)
