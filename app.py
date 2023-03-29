@@ -45,6 +45,7 @@ import librosa
 import tempfile
 from scipy.io import wavfile
 
+from flask import session
 
 #sys.path.append('D:\\CS FINAL YEAR\\Final Project\\my project\\robust-deepfake-audio-detection\\venv\\Lib\\site-packages')
 
@@ -102,19 +103,20 @@ def upload_audio():
          filepath = current_dir + '/audios/' + filename
          audio_file.save(filepath)
          filepaths.append(filepath)
+ 
    #redirect to classification route
    print('next to clsasify')
-   return redirect(url_for('classify_audio', filepaths=filepaths))
+   return redirect(url_for('classify_audio'))
 
-@app.route('/classify-audio', methods = ['GET'])
+@app.route('/classify-audio', methods = ['POST'])
 def classify_audio():
     print('this is classify')
-    filepaths = request.args.getlist('filepaths')
+    filepaths =  current_dir + '/audios/'
     results = []
     for filepath in filepaths:
         # preprocess the audio file
         preprocessed_audio = preprocess_audio(filepath)
-        print(preprocess_audio.shape)
+        print(preprocessed_audio.shape)
         # run the model to detect if the audio is a deepfake or not
         prediction = model.predict(preprocessed_audio)
 
