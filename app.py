@@ -111,9 +111,9 @@ def upload_audio():
 @app.route('/classify-audio', methods = ['POST'])
 def classify_audio():
     print('this is classify')
-    filepaths =  current_dir + '/audios/'
+    audios_dir =  current_dir + '/audios/'
     results = []
-    for filepath in filepaths:
+    for filepath in os.listdir(audios_dir):
         # preprocess the audio file
         preprocessed_audio = preprocess_audio(filepath)
         print(preprocessed_audio.shape)
