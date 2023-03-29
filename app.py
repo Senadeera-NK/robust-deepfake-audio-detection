@@ -105,7 +105,7 @@ def upload_audio():
          filepaths.append(filepath)
  
    #redirect to classification route
-   print('next to clsasify')
+   print('next to classify')
    return redirect(url_for('classify_audio'))
 
 @app.route('/classify-audio', methods = ['POST'])
